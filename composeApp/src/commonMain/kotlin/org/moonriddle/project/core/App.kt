@@ -1,8 +1,7 @@
 package org.moonriddle.project.core
 
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.moonriddle.project.core.navigation.MainTab
 import org.moonriddle.project.core.navigation.NavigationEvent
 import org.moonriddle.project.core.navigation.NavigationStore
 import org.moonriddle.project.core.navigation.Screen
@@ -13,27 +12,31 @@ import org.moonriddle.project.features.main.presentation.MainScreen
 import org.moonriddle.project.features.onboarding.presentation.OnboardingScreen
 
 @Composable
-@Preview
 fun App(navigationStore: NavigationStore) {
     val state by navigationStore.navigationState.collectAsState()
 
+    val navigateTo: (Screen) -> Unit = { screen ->
+        navigationStore.handleEvent(NavigationEvent.NavigateTo(screen))
+    }
+
+    val navigateBack: () -> Unit = {
+        navigationStore.handleEvent(NavigationEvent.NavigateBack)
+    }
+
     when (val screen = state.currentScreen) {
-        Screen.Onboarding -> OnboardingScreen(
-            onFinish = {
-                navigationStore.handleEvent(NavigationEvent.NavigateTo(Screen.Start))
-            }
-        )
+        Screen.Onboarding -> OnboardingScreen(onFinish = { navigateTo(Screen.Start) })
         Screen.Start -> StartScreen(
-            onCreateAccount = { navigationStore.handleEvent(NavigationEvent.NavigateTo(Screen.CreateAccount)) },
-            onImportAccount = { navigationStore.handleEvent(NavigationEvent.NavigateTo(Screen.ImportAccount)) }
+            onCreateAccount = { navigateTo(Screen.CreateAccount) },
+            onImportAccount = { navigateTo(Screen.ImportAccount) }
         )
-        Screen.CreateAccount -> CreateAccountScreen {  }
-        Screen.ImportAccount -> ImportAccountScreen {  }
+        Screen.CreateAccount -> CreateAccountScreen(
+            onBack = { navigateBack() },
+            onCreate = { navigateTo(Screen.Main(selectedTab = MainTab.Home)) }
+        )
+        Screen.ImportAccount -> ImportAccountScreen(onBack = { navigateBack() })
         is Screen.Main -> MainScreen(
             selectedTab = screen.selectedTab,
-            onTabSelected = { newTab ->
-                navigationStore.handleEvent(NavigationEvent.NavigateTo(Screen.Main(newTab)))
-            }
+            onTabSelected = { newTab -> navigateTo(Screen.Main(newTab)) }
         )
     }
 }

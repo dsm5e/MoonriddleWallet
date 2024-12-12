@@ -9,7 +9,10 @@ import androidx.compose.ui.unit.dp
 import org.moonriddle.project.designSystem.PrimaryButton
 
 @Composable
-fun CreateAccountScreen(onBack: () -> Unit) {
+fun CreateAccountScreen(
+    onBack: () -> Unit,
+    onCreate: () -> Unit
+) {
     Column(
         modifier = Modifier.fillMaxWidth().padding(16.dp),
         verticalArrangement = Arrangement.Center,
@@ -20,9 +23,8 @@ fun CreateAccountScreen(onBack: () -> Unit) {
         // Вставить реальную логику генерации аккаунта
         Text("Ваш Account ID: new_account_id_placeholder")
         Spacer(modifier = Modifier.height(32.dp))
+        PrimaryButton(text = "Отправить запрос на создание аккаунта", onClick = onBack)
         PrimaryButton(text = "Назад", onClick = onBack)
-        Button(onClick = onBack) {
-            Text("Назад")
-        }
+        PrimaryButton(text = "пройти без запроса", onClick = onCreate)
     }
 }
