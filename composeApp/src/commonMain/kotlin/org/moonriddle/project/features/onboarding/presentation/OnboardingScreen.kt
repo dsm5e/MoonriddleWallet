@@ -11,8 +11,10 @@ import androidx.compose.ui.unit.dp
 import org.moonriddle.project.designSystem.AppColors
 import org.moonriddle.project.designSystem.PrimaryButton
 import androidx.compose.foundation.Image
-import moonriddlewallet.composeapp.generated.resources.Res
-import moonriddlewallet.composeapp.generated.resources.compose_multiplatform
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import moonriddlewallet.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -25,6 +27,12 @@ fun OnboardingScreen(
         "Добро пожаловать в наш XRPL кошелек! Управляйте своими XRP активами.",
         "Подписывайте транзакции безопасно и проверяйте баланс в реальном времени.",
         "Легко переключайтесь между разными аккаунтами и делайте переводы."
+    )
+
+    val images = listOf(
+        Res.drawable.onboarding1,
+        Res.drawable.onboarding2,
+        Res.drawable.onboarding3
     )
 
     Column(
@@ -44,14 +52,18 @@ fun OnboardingScreen(
             color = AppColors.FontPrimary
         )
 
-//        Image(
-//            painter = painterResource(id = images[currentPage]),
-//            contentDescription = null,
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(200.dp) // Задайте нужный размер
-//                .align(Alignment.CenterHorizontally)
-//        )
+        Spacer(modifier = Modifier.height(120.dp))
+
+        Image(
+            painter = painterResource(images[currentPage]),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(300.dp)
+                .clip(RoundedCornerShape(16.dp)) // Укажите желаемый радиус
+                .align(Alignment.CenterHorizontally)
+        )
 
         Spacer(modifier = Modifier.weight(1f))
 
