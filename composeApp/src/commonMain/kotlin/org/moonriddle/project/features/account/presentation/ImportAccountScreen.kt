@@ -1,4 +1,4 @@
-package org.moonriddle.project.accountFlow
+package org.moonriddle.project.features.account.presentation
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*

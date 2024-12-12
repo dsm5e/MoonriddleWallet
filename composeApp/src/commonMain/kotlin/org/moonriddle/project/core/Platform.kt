@@ -1,4 +1,4 @@
-package org.moonriddle.project
+package org.moonriddle.project.core
 
 interface Platform {
     val name: String
